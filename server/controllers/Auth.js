@@ -4,6 +4,7 @@ const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailSender = require("../utils/mailSender");
+const Profile = require("../models/Profile");
 require("dotenv").config();
 
 //send OTP
@@ -76,7 +77,6 @@ exports.signup = async (req, res) => {
             contactNumber,
             otp
         } = req.body;
-
         // validate data
         if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
             return res.status(403).json({
@@ -100,19 +100,22 @@ exports.signup = async (req, res) => {
             });
         }
 
-        // find most recent OTP stored for the user
-        const recentOtp = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-        console.log(recentOtp);
-        // validate OTP
-        if (recentOtp.length === 0) {
-            // otp not found
+        //// Find most recent OTP stored for the user
+        const recentOtps = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+        const recentOtp = recentOtps[0]; // Access the first element of the array
+
+        console.log("recentOtps = ", recentOtps);
+
+        // Validate OTP
+        if (!recentOtp) {
+            // OTP not found
             return res.status(400).json({
                 success: false,
                 message: "OTP not found"
             });
-        }
-        else if (otp !== recentOtp) {
-            // Invalid Otp
+        } else if (otp !== recentOtp.otp) {
+            console.log("recentOtp.otp= ", recentOtp.otp);
+            // Invalid OTP
             return res.status(400).json({
                 success: false,
                 message: "Invalid OTP"
@@ -177,24 +180,21 @@ exports.login = async (req, res) => {
             })
         }
         // generate JWT after password Matching
-        if (await bcrypt.compare(password, user.password)) {
-            const payload = {
-                email: user.email,
-                id: user._id,
-                accountType: user.accountType
-            }
-            const token = jwt.sign(payload, process.env.JWT_SECRET, {
-                expiresIn: "2h"
-            });
-            user.token = token;
-            user.password = undefined;
-        }
-        else {
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
             return res.status(401).json({
                 success: false,
                 message: "Password is incorrect"
             });
         }
+
+        // Generate JWT token
+        const payload = {
+            email: user.email,
+            id: user._id,
+            accountType: user.accountType
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" });
         // create cookie and send response
         const options = {
             expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
