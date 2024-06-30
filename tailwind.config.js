@@ -128,6 +128,10 @@ export default {
       },
     },
     extend: {
+      screens:{
+        xs:'500px',
+        sm:'740px'
+      },
       maxWidth: {
         maxContent: "1260px",
         maxContentTab: "650px"

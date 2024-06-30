@@ -10,7 +10,7 @@ export const CodeBlocks = ({
     return (
         <div className={`flex ${position} my-20 justify-between gap-20 items-center`}>
             {/* section 1 */}
-            <div className='flex flex-col w-[50%] gap-8 max-w-[500px]'>
+            <div className='flex flex-col w-11/12 lg:w-[50%] gap-8 max-w-[500px]'>
                 {heading}
 
                 <div className='text-[16px] font-medium leading-6 text-richblack-300'>
@@ -33,7 +33,8 @@ export const CodeBlocks = ({
             </div>
 
             {/* section 2 */}
-            <div className='flex h-fit lg:w-[500px]'>
+            <div className='flex h-fit w-11/12 lg:w-[500px] relative'>
+                {backgroundGradient}
                 <div className='text-center flex flex-col w-[10%] text-richblack-400 font-inter font-bold'>
                     <p>1</p>
                     <p>2</p>
