@@ -54,7 +54,7 @@ export const Home = () => {
 
                     </div>
                     {/* video section */}
-                    <div className='shadow shadow-blue-200 mx-3 xs:my-40 sm:my-40 md:my-28 mt-[70%] max-w-[1035px] max-h-[515px]'>
+                    <div className='shadow-2xl shadow-blue-200 mx-3 xs:my-40 sm:my-40 md:my-28 mt-[70%] max-w-[1035px] max-h-[515px]'>
                         <video
                             className='shadow-[20px_20px_rgba(255,255,255)]'
                             muted

@@ -71,7 +71,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
             
             </label>
             
-            <button className='bg-yellow-400 rounded-md p-2 select-none'>
+            <button className='bg-yellow-100 rounded-md p-2 select-none'>
                 Sign In
             </button>
         </form>

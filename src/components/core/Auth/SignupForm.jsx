@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import countrycode from '../../../data/countrycode.json'
 
 export const SignupForm = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [accountType,setAccountType] = useState("student");
+    const [accountType, setAccountType] = useState("student");
 
     function changeHandler(event) {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -30,7 +31,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
         }
         setIsLoggedIn(true);
         toast.success("Account Created");
-        
+
         const accountData = {
             ...formData
         }
@@ -49,17 +50,21 @@ export const SignupForm = ({ setIsLoggedIn }) => {
     return (
         <div>
             {/* Students-Instructor tab */}
-            <div className='flex rounded-full bg-gray-500 gap-x-1 p-1 my-6 max-w-max'>
-                <button className={`text-white ${accountType === 'student' ? 'bg-black' : 'bg-transparent'} py-2 px-5 rounded-full transition-all duration-200`}
-                onClick={()=>{
-                    setAccountType("student")
+            <div className='flex rounded-full bg-richblack-800 gap-x-1 p-1 my-6 max-w-max'
+                style={{
+                    boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                 }}
+            >
+                <button className={`text-white ${accountType === 'student' ? 'bg-richblack-900 text-richblack-5' : 'bg-transparent text-richblack-200'} py-2 px-5 rounded-full transition-all duration-200`}
+                    onClick={() => {
+                        setAccountType("student")
+                    }}
                 >
                     Student</button>
-                <button className={`text-white ${accountType === 'instructor' ? 'bg-black' : 'bg-transparent'} py-2 px-5 rounded-full transition-all duration-200`}
-                onClick={()=>{
-                    setAccountType("instructor")
-                }}
+                <button className={`text-white ${accountType === 'instructor' ? 'bg-richblack-900 text-richblue-5' : 'bg-transparent text-richblack-200'} py-2 px-5 rounded-full transition-all duration-200`}
+                    onClick={() => {
+                        setAccountType("instructor")
+                    }}
                 >Instructor</button>
             </div>
 
@@ -108,6 +113,43 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                     </label>
                 </div>
 
+                {/* Phone number */}
+                <div className='mt-3'>
+                    <label className='w-full flex flex-col gap-3'>
+                        <p className='text-richblack-5 leading-[1.375rem] text-[.875rem]'>
+                            Phone Number <sup className='text-pink-500'>*</sup>
+                        </p>
+                        <div className='flex gap-5 items-center'>
+
+                            <div className='w-[20%]'>
+                                <input
+                                    list="country-codes"
+                                    placeholder="+91"
+                                    className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 leading-[1.375rem] tex-[.875rem]'
+                                />
+                                <datalist id="country-codes" className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 leading-[1.375rem] tex-[.875rem]'>
+                                    {
+                                        countrycode.map((countrycode) => <option value={countrycode.code}>{countrycode.code}</option>)
+                                    }
+                                </datalist>
+                                {/* <select className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 leading-[1.375rem] tex-[.875rem]'>
+                                    {
+                                        countrycode.map((countrycode) => <option value={countrycode.code}>{countrycode.code}</option>)
+                                    }
+                                </select> */}
+                            </div>
+
+                            <div className='w-full justify-stretch'>
+                                <input
+                                    type="text"
+                                    placeholder="Phone Number"
+                                    className='leading-[1.375rem] text-[.875rem] bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2'
+                                />
+                            </div>
+
+                        </div>
+                    </label>
+                </div>
 
                 {/* createPassword and confirmPassword */}
                 <div className='flex gap-4 mt-3'>
@@ -154,7 +196,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
 
 
                 </div>
-                <button className='w-full bg-yellow-400 rounded-md p-2 select-none mt-4 '>
+                <button className='w-full bg-yellow-100 rounded-md p-2 select-none mt-4 '>
                     Create Account
                 </button>
             </form>
