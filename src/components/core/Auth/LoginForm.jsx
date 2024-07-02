@@ -37,7 +37,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
                     onChange={changeHandler}
                     placeholder='Enter Email Address'
                     name='email'
-                    className='bg-gray-600 rounded-[.5rem] text-richblack-800 w-full p-2'
+                    className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2'
                 />
             </label>
 
@@ -53,7 +53,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
                     onChange={changeHandler}
                     placeholder='Enter Password'
                     name='password'
-                    className='bg-gray-600 rounded-[.5rem] text-richblack-800 w-full p-2'
+                    className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2'
                 />
 
                 <span onClick={() => {
@@ -64,7 +64,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
                 </span>
                     
                 <Link to={"#"}>
-                    <p className='text-sm text-blue-400 max-w-max mt-1 ml-auto select-none'>
+                    <p className='text-sm text-blue-100 max-w-max mt-1 ml-auto select-none'>
                         Forgot Password
                     </p>
                 </Link>
