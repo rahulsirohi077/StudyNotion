@@ -6,20 +6,20 @@ import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { ProfileDropDown } from '../core/Auth/ProfileDropDown'
-// import { apiConnector } from '../../services/apiconnector'
+import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
 import { BsChevronDown } from 'react-icons/bs'
 
-const subLinks = [
-    {
-        title: "Python",
-        link: "/catalog/python"
-    }
-    , {
-        title: "web dev",
-        link: "/catalog/web-development"
-    }
-];
+// const subLinks = [
+//     {
+//         title: "Python",
+//         link: "/catalog/python"
+//     }
+//     , {
+//         title: "web dev",
+//         link: "/catalog/web-development"
+//     }
+// ];
 
 export const Navbar = () => {
 
@@ -28,22 +28,22 @@ export const Navbar = () => {
     const { totalItems } = useSelector((state) => state.cart);
     const location = useLocation();
 
-    // const [subLinks, setSubLinks] = useState([]);
+    const [subLinks, setSubLinks] = useState([]);
 
-    // const fetchSubLinks = async () => {
-    //     try {
-    //         const result = await apiConnector("GET", categories.CATEGORIES_API);
-    //         console.log("Printing Sublinks result: ", result);
-    //         setSubLinks(result.data.data);
-    //     } catch (error) {
-    //         console.log("Could not fetch the category list");
-    //         console.log(error);
-    //     }
+    const fetchSubLinks = async () => {
+        try {
+            const result = await apiConnector("GET", categories.CATEGORIES_API);
+            console.log("Printing Sublinks result: ", result);
+            setSubLinks(result.data.categories);
+        } catch (error) {
+            console.log("Could not fetch the category list");
+            console.log(error);
+        }
 
-    // }
+    }
     useEffect(() => {
-        // fetchSubLinks();
-    }, [])
+        fetchSubLinks();
+    }, []);
 
     const matchRoute = (route) => {
         return matchPath({ path: route }, location.pathname);
@@ -71,25 +71,25 @@ export const Navbar = () => {
                                                 <p>{link.title}</p>
                                                 <BsChevronDown />
                                                 
-                                                <div className='invisible absolute left-[50%] translate-x-[-50%] translate-y-[25%] top-[50%] flex
+                                                <div className='invisible absolute left-[50%] translate-x-[-50%] translate-y-[5%] top-[50%] flex
                                                 flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
-                                                opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px]'>
+                                                opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px] z-50'>
 
-                                                    <div className='absolute left-[50%] top-[-15%] h-6 w-6 rotate-45 rounded bg-richblack-5 translate-x-[86%]'>
+                                                    <div className='absolute left-[50%] top-[-5%] h-6 w-6 rotate-45 rounded bg-richblack-5 translate-x-[86%] z-50'>
 
-                                                    </div>
+                                                    </div >
 
                                                     {
-                                                        subLinks.length ? (
+                                                        subLinks.length > 0 ? (
 
                                                             subLinks.map((subLi, index) => {
                                                                 return (
-                                                                    <Link to={subLi.link} key={index}>
-                                                                        {subLi.title}
+                                                                    <Link to={`/catalog/${subLi.name}`} key={index}>
+                                                                        {subLi.name}
                                                                     </Link>
                                                                 );
                                                             })
-                                                        ) : (<div></div>)
+                                                        ) : (<div>No Sublinks Avialable</div>)
                                                     }
 
                                                 </div>

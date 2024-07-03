@@ -16,7 +16,7 @@ export const Home = () => {
     return (
         <div>
             {/* section 1 */}
-            <div className='group relative mx-auto flex flex-col w-11/12 items-center text-white justify-evenly lg:justify-between'>
+            <div className='group relative mx-auto flex flex-col w-11/12 items-center text-white            justify-evenly lg:justify-between'>
                 <div className='flex flex-col gap-[38px]'>
                     {/* Intro section */}
                     <div className='max-w-[913px] max-h-[276px] mx-auto gap-9 flex flex-col'>
@@ -140,7 +140,7 @@ export const Home = () => {
             {/* section 2 */}
             <div className='bg-pure-greys-5 text-richblack-700'>
                 <div className='homepage_bg h-[310px]'>
-                    <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-center gap-5 mx-auto h-full'>
+                    <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-end pb-20 gap-5 mx-auto h-full'>
                         <div className='flex gap-7 text-white '>
                             <Button active={true} linkto={"/signup"}>
 

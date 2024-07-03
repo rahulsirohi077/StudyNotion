@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
+// import {login} from "../../../services/operations/authAPI";
 
 export const LoginForm = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();
@@ -19,6 +20,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
     function submitHandler(event){
         event.preventDefault();
         setIsLoggedIn(true);
+        // dispatch(login(email,password,navigate))
         toast.success("Logged In");
         navigate("/dashboard");
     }
