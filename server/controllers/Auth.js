@@ -74,7 +74,6 @@ exports.signup = async (req, res) => {
             password,
             confirmPassword,
             accountType,
-            contactNumber,
             otp
         } = req.body;
         // validate data
@@ -136,7 +135,6 @@ exports.signup = async (req, res) => {
             firstName,
             lastName,
             email,
-            contactNumber,
             password: hashedPassword,
             accountType,
             additionalDetails: profileDetails._id,

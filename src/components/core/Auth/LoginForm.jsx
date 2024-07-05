@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-// import {login} from "../../../services/operations/authAPI";
+import {login} from "../../../services/operations/authAPI";
+import { useDispatch } from 'react-redux';
 
-export const LoginForm = ({ setIsLoggedIn }) => {
+export const LoginForm = () => {
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
@@ -19,10 +22,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
 
     function submitHandler(event){
         event.preventDefault();
-        setIsLoggedIn(true);
-        // dispatch(login(email,password,navigate))
-        toast.success("Logged In");
-        navigate("/dashboard");
+        dispatch(login(formData.email,formData.password,navigate));
     }
 
     return (
@@ -65,7 +65,7 @@ export const LoginForm = ({ setIsLoggedIn }) => {
                     : (<AiOutlineEye fontSize={24} fill='#AFB2BF'/>) }
                 </span>
                     
-                <Link to={"#"}>
+                <Link to={"/forgot-password"}>
                     <p className='text-sm text-blue-100 max-w-max mt-1 ml-auto select-none'>
                         Forgot Password
                     </p>

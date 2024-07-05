@@ -10,16 +10,6 @@ import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
 import { BsChevronDown } from 'react-icons/bs'
 
-// const subLinks = [
-//     {
-//         title: "Python",
-//         link: "/catalog/python"
-//     }
-//     , {
-//         title: "web dev",
-//         link: "/catalog/web-development"
-//     }
-// ];
 
 export const Navbar = () => {
 

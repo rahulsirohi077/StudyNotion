@@ -4,47 +4,60 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import countrycode from '../../../data/countrycode.json'
 
-export const SignupForm = ({ setIsLoggedIn }) => {
+import { sendOtp } from "../../../services/operations/authAPI"
+import { setSignupData } from "../../../slices/authSlice"
+import { ACCOUNT_TYPE } from "../../../utils/constant"
+import { useDispatch } from 'react-redux';
+
+export const SignupForm = () => {
+
+    const dispatch = useDispatch();
+    const [accountType,setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        firstname: "",
-        lastname: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        contactNumber:""
     });
-
-
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [accountType, setAccountType] = useState("student");
 
     function changeHandler(event) {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     }
 
-    function submitHandler(event) {
-        event.preventDefault();
-        if (formData.password != formData.confirmPassword) {
-            toast.error("Password do not match");
-            return;
-        }
-        setIsLoggedIn(true);
-        toast.success("Account Created");
+    // Handle Form Submission
+    const handleOnSubmit = (e) => {
+        e.preventDefault()
 
-        const accountData = {
-            ...formData
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords Do Not Match")
+            return
         }
-
-        const finalData = {
-            ...accountData,
-            accountType
+        const signupData = {
+            ...formData,
+            accountType,
         }
 
-        console.log("printing Final accountData")
-        console.log(finalData)
+        // Setting signup data to state
+        // To be used after otp verification
+        dispatch(setSignupData(signupData))
+        // Send OTP to user for verification
+        dispatch(sendOtp(formData.email, navigate))
 
-        navigate("/dashboard");
+        // Reset
+        setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            contactNumber:""
+        })
+        setAccountType(ACCOUNT_TYPE.STUDENT)
     }
 
     return (
@@ -55,20 +68,20 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                     boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
                 }}
             >
-                <button className={`text-white ${accountType === 'student' ? 'bg-richblack-900 text-richblack-5' : 'bg-transparent text-richblack-200'} py-2 px-5 rounded-full transition-all duration-200`}
+                <button className={`text-white ${accountType === ACCOUNT_TYPE.STUDENT ? 'bg-richblack-900 text-richblack-5' : 'bg-transparent text-richblack-200'} py-2 px-5 rounded-full transition-all duration-200`}
                     onClick={() => {
-                        setAccountType("student")
+                        setAccountType(ACCOUNT_TYPE.STUDENT)
                     }}
                 >
                     Student</button>
-                <button className={`text-white ${accountType === 'instructor' ? 'bg-richblack-900 text-richblue-5' : 'bg-transparent text-richblack-200'} py-2 px-5 rounded-full transition-all duration-200`}
+                <button className={`text-white ${accountType === ACCOUNT_TYPE.INSTRUCTOR ? 'bg-richblack-900 text-richblue-5' : 'bg-transparent text-richblack-200'} py-2 px-5 rounded-full transition-all duration-200`}
                     onClick={() => {
-                        setAccountType("instructor")
+                        setAccountType(ACCOUNT_TYPE.INSTRUCTOR)
                     }}
                 >Instructor</button>
             </div>
 
-            <form onSubmit={submitHandler}>
+            <form onSubmit={handleOnSubmit}>
                 {/* firstname and lastname */}
                 <div className='flex gap-4'>
                     <label className='w-full'>
@@ -76,11 +89,11 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                         <input
                             required
                             type="text"
-                            name='firstname'
+                            name='firstName'
                             onChange={changeHandler}
                             placeholder='Enter First Name'
-                            value={formData.firstname}
-                            className='bg-richblack-800 rounded-[.5rem] text-gray-300 w-full p-2'
+                            value={formData.firstName}
+                            className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2'
                         />
                     </label>
 
@@ -89,11 +102,11 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                         <input
                             required
                             type="text"
-                            name='lastname'
+                            name='lastName'
                             onChange={changeHandler}
                             placeholder='Enter Last Name'
-                            value={formData.lastname}
-                            className='bg-richblack-800 rounded-[.5rem] text-gray-300 w-full p-2'
+                            value={formData.lastName}
+                            className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2'
                         />
                     </label>
                 </div>
@@ -108,12 +121,12 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                             onChange={changeHandler}
                             placeholder='Enter Email Address'
                             value={formData.email}
-                            className='bg-richblack-800 rounded-[.5rem] text-gray-300 w-full p-2'
+                            className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2'
                         />
                     </label>
                 </div>
 
-                {/* Phone number */}
+                {/* Phone number
                 <div className='mt-3'>
                     <label className='w-full flex flex-col gap-3'>
                         <p className='text-richblack-5 leading-[1.375rem] text-[.875rem]'>
@@ -129,7 +142,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                                 />
                                 <datalist id="country-codes" className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 leading-[1.375rem] tex-[.875rem]'>
                                     {
-                                        countrycode.map((countrycode) => <option value={countrycode.code}>{countrycode.code}</option>)
+                                        countrycode.map((countrycode,index) => <option value={countrycode.code}key={index}>{countrycode.code}</option>)
                                     }
                                 </datalist>
                                 {/* <select className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 leading-[1.375rem] tex-[.875rem]'>
@@ -137,7 +150,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                                         countrycode.map((countrycode) => <option value={countrycode.code}>{countrycode.code}</option>)
                                     }
                                 </select> */}
-                            </div>
+                            {/* </div>
 
                             <div className='w-full justify-stretch'>
                                 <input
@@ -149,10 +162,10 @@ export const SignupForm = ({ setIsLoggedIn }) => {
 
                         </div>
                     </label>
-                </div>
+                </div> */}
 
                 {/* createPassword and confirmPassword */}
-                <div className='flex gap-4 mt-3'>
+                <div className='flex gap-4 mt-4'>
                     <div className='w-full'>
                         <label className='w-full relative'>
                             <p className='text-[.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Create Password<sup className='text-pink-500'>*</sup></p>
@@ -163,7 +176,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                                 onChange={changeHandler}
                                 placeholder='Enter Password'
                                 value={formData.password}
-                                className='bg-richblack-800 rounded-[.5rem] text-gray-300 w-full p-2 select-none'
+                                className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 select-none'
                             />
                             <span onClick={() => {
                                 setShowPassword(!showPassword)
@@ -183,7 +196,7 @@ export const SignupForm = ({ setIsLoggedIn }) => {
                                 onChange={changeHandler}
                                 placeholder="Confirm Password"
                                 value={formData.confirmPassword}
-                                className='bg-richblack-800 rounded-[.5rem] text-gray-300 w-full p-2 select-none'
+                                className='bg-richblack-800 rounded-[.5rem] text-richblack-5 w-full p-2 select-none'
                             />
                             <span onClick={() => {
                                 setShowConfirmPassword(!showConfirmPassword)
