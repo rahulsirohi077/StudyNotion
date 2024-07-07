@@ -1,111 +1,117 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { resetPassword } from '../services/operations/authAPI';
-import { useLocation } from 'react-router-dom';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { useState } from "react"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { BiArrowBack } from "react-icons/bi"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
-export const UpdatePassword = () => {
+import { resetPassword } from "../services/operations/authAPI"
 
-    const location = useLocation();
-    const dispatch = useDispatch();
+export function UpdatePassword() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const { loading } = useSelector((state) => state.auth)
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: "",
+  })
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const {loading} = useSelector((state)=>state.auth);
-    const [formData, setFormData] = useState({
-        password:'',
-        confirmPassword:''
-    });
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-    const {password,confirmPassword} = formData;
+  const { password, confirmPassword } = formData
 
-    const handleOnChange = (e) => {
+  const handleOnChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }))
+  }
 
-        setFormData((prevData)=>(
-            {
-                ...prevData,
-                [e.target.name]:e.target.value,
-            }
-        ))
-
-    }
-
-    const handleOnSubmit = (e)=>{
-        e.preventDefault();
-        const token = location.pathname.split('/').at(-1);
-        dispatch(resetPassword(password,confirmPassword,token));
-    }
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    const token = location.pathname.split("/").at(-1)
+    dispatch(resetPassword(password, confirmPassword, token, navigate))
+  }
 
   return (
-    <div className='text-white'>
-        {
-            loading ? (
-                <div>
-                    Loading...
-                </div>
-            ) : (
-                <div>
-                    <h1>Choose new Password</h1>
-                    <p>Almost done. Enter your new password and youre all set.</p>
-                    <form onSubmit={handleOnSubmit}>
+    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+      {loading ? (
+        <div className="spinner"></div>
+      ) : (
+        <div className="max-w-[500px] p-4 lg:p-8">
+          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
+            Choose new password
+          </h1>
+          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
+            Almost done. Enter your new password and youre all set.
+          </p>
+          <form onSubmit={handleOnSubmit}>
+            <label className="relative">
+              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
+                New Password <sup className="text-pink-200">*</sup>
+              </p>
+              <input
+                required
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={password}
+                onChange={handleOnChange}
+                placeholder="Enter Password"
+                className="select-none rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none w-full !pr-10"
+              />
+              <span
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+              >
+                {showPassword ? (
+                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+                ) : (
+                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+                )}
+              </span>
+            </label>
+            <label className="relative mt-3 block">
+              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5 select-none">
+                Confirm New Password <sup className="text-pink-200">*</sup>
+              </p>
+              <input
+                required
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={handleOnChange}
+                placeholder="Confirm Password"
+                className="select-none rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none w-full !pr-10"
+              />
+              <span
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+              >
+                {showConfirmPassword ? (
+                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+                ) : (
+                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+                )}
+              </span>
+            </label>
 
-                        <label>
-                            <p>New Password <sup>*</sup></p>
-                            <input 
-                                required
-                                type={showPassword ? "text" : "password"} 
-                                name='password'
-                                value={formData.password}
-                                onChange={handleOnChange}
-                                placeholder='Password'
-                                className='w-full p-6 bg-richblack-600 text-richblack-5'
-                            />
-                            <span onClick={()=>setShowPassword((prev)=>!prev)}>
-                                {
-                                    showPassword ? <AiFillEyeInvisible fontSize={24}/> 
-                                    : <AiFillEye fontSize={24}/>
-                                }
-                            </span>
-                        </label>
-
-                        <label>
-                            <p>Confirm New Password <sup>*</sup></p>
-                            <input 
-                                required
-                                type={showConfirmPassword ? "text" : "password"} 
-                                name='confirmPassword'
-                                value={formData.confirmPassword}
-                                onChange={handleOnChange}
-                                placeholder='Confirm Password'
-                                className='w-full p-6 bg-richblack-600 text-richblack-5'
-                            />
-                            <span onClick={()=>setShowConfirmPassword((prev)=>!prev)}>
-                                {
-                                    showConfirmPassword ? <AiFillEyeInvisible fontSize={24}/> 
-                                    : <AiFillEye fontSize={24}/>
-                                }
-                            </span>
-                        </label>
-
-                        <button type='submit'>
-                            Reset Password
-                        </button>
-
-                    </form>
-
-                    <div>
-
-                        <Link to={'/login'}>
-                            <p>Back To Login</p>
-                        </Link>
-                        
-                    </div>
-
-                </div>
-            )
-        }
-
+            <button
+              type="submit"
+              className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900 select-none"
+            >
+              Reset Password
+            </button>
+          </form>
+          <div className="mt-6 flex items-center justify-between">
+            <Link to="/login">
+              <p className="flex items-center gap-x-2 text-richblack-5 select-none">
+                <BiArrowBack /> Back To Login
+              </p>
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
