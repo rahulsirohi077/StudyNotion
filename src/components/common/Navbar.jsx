@@ -65,7 +65,7 @@ export const Navbar = () => {
                                                 flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
                                                 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px] z-50'>
 
-                                                    <div className='absolute left-[50%] top-[-5%] h-6 w-6 rotate-45 rounded bg-richblack-5 translate-x-[86%] z-50'>
+                                                    <div className='absolute left-[50%] top-[-2%] h-6 w-6 rotate-45 rounded bg-richblack-5 translate-x-[86%] -z-50'>
 
                                                     </div >
 
@@ -74,7 +74,9 @@ export const Navbar = () => {
 
                                                             subLinks.map((subLi, index) => {
                                                                 return (
-                                                                    <Link to={`/catalog/${subLi.name}`} key={index}>
+                                                                    <Link to={`/catalog/${subLi.name}`} key={index}
+                                                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                                                    >
                                                                         {subLi.name}
                                                                     </Link>
                                                                 );
