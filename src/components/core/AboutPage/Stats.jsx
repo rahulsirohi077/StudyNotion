@@ -10,14 +10,14 @@ const statsArr = [
 const Stats = () => {
   return (
     <section>
-        <div>
-            <div className='flex gap-x-5'>
+        <div className='bg-richblack-700 lg:px-[120px] lg:py-[90px]'>
+            <div className='flex justify-between w-11/12'>
                 {
                     statsArr.map((data,index)=>{
                         return (
-                            <div key={index}>
-                                <h1>{data.count}</h1>
-                                <h2>{data.label}</h2>
+                            <div key={index} className='flex flex-col gap-3'>
+                                <h1 className='text-center text-4xl text-richblack-5'>{data.count}</h1>
+                                <h2 className='text-center font-semibold text-richblack-300'>{data.label}</h2>
                             </div>
                         );
                     })
