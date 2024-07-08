@@ -10,6 +10,7 @@ import OpenRoute from './components/core/Auth/OpenRoute';
 import { UpdatePassword } from './pages/UpdatePassword';
 import { VerifyEmail } from './pages/VerifyEmail';
 import { About } from './pages/About';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 
@@ -61,12 +62,10 @@ function App() {
         } />
 
         <Route path='/about' element={
-
-          <OpenRoute>
             <About />
-          </OpenRoute>
-
         } />
+
+        <Route path='dashboard/my-profile' element={<MyProfile />}/>
 
       </Routes>
     </div>

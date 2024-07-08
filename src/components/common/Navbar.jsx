@@ -5,10 +5,11 @@ import { NavbarLinks } from '../../data/navbar-links'
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
-import { ProfileDropDown } from '../core/Auth/ProfileDropDown'
+import { ProfileDropdown } from '../core/Auth/ProfileDropDown'
 import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/apis'
 import { BsChevronDown } from 'react-icons/bs'
+import { ACCOUNT_TYPE } from '../../utils/constant'
 
 
 export const Navbar = () => {
@@ -60,7 +61,7 @@ export const Navbar = () => {
 
                                                 <p>{link.title}</p>
                                                 <BsChevronDown />
-                                                
+
                                                 <div className='invisible absolute left-[50%] translate-x-[-50%] translate-y-[5%] top-[50%] flex
                                                 flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
                                                 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 lg:w-[300px] z-50'>
@@ -75,7 +76,7 @@ export const Navbar = () => {
                                                             subLinks.map((subLi, index) => {
                                                                 return (
                                                                     <Link to={`/catalog/${subLi.name}`} key={index}
-                                                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                                                        className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                                                                     >
                                                                         {subLi.name}
                                                                     </Link>
@@ -106,23 +107,20 @@ export const Navbar = () => {
                 </nav>
 
                 {/* Login/SignUp/Dashboard */}
-                <div className='flex gap-x-4 items-center'>
+                <div className='flex gap-x-5 items-center'>
 
-                    {
-                        user && user?.accountType != 'Instructor' && (
+                    {user && user?.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
+                        <Link to="/dashboard/cart" className="relative">
+                            <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
+                            {totalItems > 0 && (
+                                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                                    {totalItems}
+                                </span>
+                            )}
+                        </Link>
+                    )}
 
-                            <Link to={"/dashboard/cart"} className='relative'>
-                                <AiOutlineShoppingCart />
-                                {
-                                    totalItems > 0 && (
-                                        <span>
-                                            {totalItems}
-                                        </span>
-                                    )
-                                }
-                            </Link>
-                        )
-                    }
+
                     {
                         token === null && (
                             <Link to={"/login"}>
@@ -146,7 +144,7 @@ export const Navbar = () => {
                         )
                     }
                     {
-                        token != null && <ProfileDropDown />
+                        token != null && <ProfileDropdown />
                     }
 
 
