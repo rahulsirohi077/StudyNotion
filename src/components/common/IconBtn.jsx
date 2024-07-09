@@ -14,19 +14,17 @@ export const IconBtn = ({
         disabled={disabled}
         onClick={onClick}
         type={type}
-        className='cursor-pointer'
+        className={`cursor-pointer bg-yellow-50 py-2 px-4 rounded-md text-black font-semibold ${customClasses}`}
         >
             {
                 children ? (
-                    <div className="flex gap-1 items-center bg-yellow-50 py-2 px-4 rounded-md text-black font-semibold">
-                        <span>
+                    <div className='flex items-center gap-1'>
+                        <span >
                             {text}
                         </span>
                         {children}
                     </div>
-                ) : (<div className="flex items-center bg-yellow-50 py-2 px-4 rounded-md text-black font-semibold">
-                    {text}
-                </div>)
+                ) : (text)
             }
         </button>
     )
