@@ -18,13 +18,15 @@ export const IconBtn = ({
         >
             {
                 children ? (
-                    <div className='flex items-center gap-1 bg-yellow-50 py-2 px-4 rounded-md'>
+                    <div className="flex gap-1 items-center bg-yellow-50 py-2 px-4 rounded-md text-black font-semibold">
                         <span>
                             {text}
                         </span>
                         {children}
                     </div>
-                ) : (text)
+                ) : (<div className="flex items-center bg-yellow-50 py-2 px-4 rounded-md text-black font-semibold">
+                    {text}
+                </div>)
             }
         </button>
     )
