@@ -5,8 +5,11 @@ import { addCourseDetails, editCourseDetails, fetchCourseCategories } from '../.
 import { HiOutlineCurrencyRupee } from 'react-icons/hi';
 import RequirementField from './RequirementField';
 import { IconBtn } from '../../../../common/IconBtn';
-import { setCourse } from '../../../../../slices/courseSlice';
+import { setCourse, setStep } from '../../../../../slices/courseSlice';
 import { COURSE_STATUS } from '../../../../../utils/constant';
+import ChipInput from './ChipInput';
+import Upload from '../Upload';
+import { MdNavigateNext } from 'react-icons/md';
 
 const CourseInformationForm = () => {
 
@@ -19,6 +22,7 @@ const CourseInformationForm = () => {
     } = useForm();
 
     const dispatch = useDispatch();
+    const {step} = useSelector((state)=>state.course);
     const { token } = useSelector((state) => state.auth);
     const { course, editCourse } = useSelector((state) => state.course);
     const [loading, setLoading] = useState(false);
@@ -69,6 +73,7 @@ const CourseInformationForm = () => {
 
     // handle next button Click
     const onSubmit = async (data) => {
+        console.log("data = ",data)
 
         if (editCourse) {
             if (isFormUpdated()) {
@@ -101,7 +106,7 @@ const CourseInformationForm = () => {
                 const result = await editCourseDetails(formData, token);
                 setLoading(false);
                 if (result) {
-                    setStep(2);
+                    dispatch(setStep(2));
                     dispatch(setCourse(result));
 
                 }
@@ -126,7 +131,7 @@ const CourseInformationForm = () => {
         setLoading(true);
         const result = await addCourseDetails(formData, token);
         if (result) {
-            setStep(2);
+            dispatch(setStep(2));
             dispatch(setCourse(result));
         }
         setLoading(false);
@@ -137,148 +142,158 @@ const CourseInformationForm = () => {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className='rounded-md border border-richblack-700 bg-richblack-800 p-6 space-y-8'
+            className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
         >
-            <div>
-                <label htmlFor="courseTitle">Course Title <sup>*</sup></label>
+            {/* Course Title */}
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="courseTitle">
+                    Course Title <sup className="text-pink-200">*</sup>
+                </label>
                 <input
-                    id='courseTitle'
-                    placeholder='Enter Course Title'
-                    {...register('courseTitle', { required: true })}
-                    className='w-full'
+                    id="courseTitle"
+                    placeholder="Enter Course Title"
+                    {...register("courseTitle", { required: true })}
+                    className="form-style w-full"
                 />
-                {
-                    errors.courseTitle && (
-                        <span>Course Title is Required</span>
-                    )
-                }
+                {errors.courseTitle && (
+                    <span className="ml-2 text-xs tracking-wide text-pink-200">
+                        Course title is required
+                    </span>
+                )}
             </div>
-
-            <div>
-                <label htmlFor="courseShortDesc">Course Short Description</label>
+            {/* Course Short Description */}
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="courseShortDesc">
+                    Course Short Description <sup className="text-pink-200">*</sup>
+                </label>
                 <textarea
                     id="courseShortDesc"
-                    placeholder='Enter Description'
-                    {...register('courseShortDesc', { required: true })}
-                    className='min-h-[140px] w-full'
+                    placeholder="Enter Description"
+                    {...register("courseShortDesc", { required: true })}
+                    className="form-style resize-x-none min-h-[130px] w-full"
                 />
-                {
-                    errors.courseShortDesc && (
-                        <span>Course Description is required</span>
-                    )
-                }
-
+                {errors.courseShortDesc && (
+                    <span className="ml-2 text-xs tracking-wide text-pink-200">
+                        Course Description is required
+                    </span>
+                )}
             </div>
-
-            <div className='relative'>
-                <label htmlFor="coursePrice">Course Price <sup>*</sup></label>
-                <input
-                    id='coursePrice'
-                    placeholder='Enter Course Price'
-                    {...register('coursePrice', {
-                        required: true,
-                        valueAsNumber: true
-                    })}
-                    className='w-full'
-                />
-                <HiOutlineCurrencyRupee className='absolute top-1/2 text-richblack-400' />
-                {
-                    errors.courseTitle && (
-                        <span>Course Price is Required</span>
-                    )
-                }
+            {/* Course Price */}
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="coursePrice">
+                    Course Price <sup className="text-pink-200">*</sup>
+                </label>
+                <div className="relative">
+                    <input
+                        id="coursePrice"
+                        placeholder="Enter Course Price"
+                        {...register("coursePrice", {
+                            required: true,
+                            valueAsNumber: true,
+                            pattern: {
+                                value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                            },
+                        })}
+                        className="form-style w-full !pl-12"
+                    />
+                    <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400" />
+                </div>
+                {errors.coursePrice && (
+                    <span className="ml-2 text-xs tracking-wide text-pink-200">
+                        Course Price is required
+                    </span>
+                )}
             </div>
-
-            <div>
-                <label htmlFor="courseCategory">Course Category <sup>*</sup></label>
+            {/* Course Category */}
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="courseCategory">
+                    Course Category <sup className="text-pink-200">*</sup>
+                </label>
                 <select
+                    {...register("courseCategory", { required: true })}
+                    defaultValue=""
                     id="courseCategory"
-                    defaultValue={''}
-                    {...register('courseCategory', { required: true })}
+                    className="form-style w-full"
                 >
-                    <option value="" disabled>Choose a Category</option>
-
-                    {
-                        !loading && courseCategories.map((category, index) => (
-                            <option value={category} key={index}>
+                    <option value="" disabled>
+                        Choose a Category
+                    </option>
+                    {!loading &&
+                        courseCategories?.map((category, indx) => (
+                            <option key={indx} value={category?._id}>
                                 {category?.name}
                             </option>
-                        ))
-                    }
-
+                        ))}
                 </select>
-                {
-                    errors.courseCategory && (
-                        <span>Course Category is Required</span>
-                    )
-                }
+                {errors.courseCategory && (
+                    <span className="ml-2 text-xs tracking-wide text-pink-200">
+                        Course Category is required
+                    </span>
+                )}
             </div>
-
-            {/* create custom component for handling tags input */}
-            {/* <ChipInput
-            label="Tags"
-            name='courseTags'
-            placeholder='Enter Tags and press enter'
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            getValues={getValues}
-        /> */}
-
-            {/* component for uploading and showing preview of media */}
-            {/* <Upload
-            name=
-            label=
-            register={}
-            errors=
-            setValue={}
-        /> */}
-
-            {/* Benefits of the course */}
-            <div>
-                <label htmlFor="">Benefits of the course</label>
-                <textarea
-                    id="courseBenefits"
-                    placeholder='Enter Benefits of the Course'
-                    {...register('courseBenefits', { required: true })}
-                    className='min-h-[130px] w-full'
-                />
-                {
-                    errors.courseBenefits && (
-                        <span>
-                            Benefits of the course are required**
-                        </span>
-                    )
-                }
-            </div>
-
-            <RequirementField
-                name="courseRequirement"
-                label="Requirements/Instructions"
+            {/* Course Tags */}
+            <ChipInput
+                label="Tags"
+                name="courseTags"
+                placeholder="Enter Tags and press Enter"
                 register={register}
                 errors={errors}
                 setValue={setValue}
                 getValues={getValues}
             />
-
-            <div>
-                {
-                    editCourse && (
-                        <button
-                            onClick={() => dispatch(setStep(2))}
-                            className='flex items-center gap-x-2 bg-richblack-300'
-                        >
-                            Continue without saving
-                        </button>
-                    )
-                }
-
-                <IconBtn
-                    text={!editCourse ? "Next" : "Save Changes"}
+            {/* Course Thumbnail Image */}
+            <Upload
+                name="courseImage"
+                label="Course Thumbnail"
+                register={register}
+                setValue={setValue}
+                errors={errors}
+                editData={editCourse ? course?.thumbnail : null}
+            />
+            {/* Benefits of the course */}
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
+                    Benefits of the course <sup className="text-pink-200">*</sup>
+                </label>
+                <textarea
+                    id="courseBenefits"
+                    placeholder="Enter benefits of the course"
+                    {...register("courseBenefits", { required: true })}
+                    className="form-style resize-x-none min-h-[130px] w-full"
                 />
+                {errors.courseBenefits && (
+                    <span className="ml-2 text-xs tracking-wide text-pink-200">
+                        Benefits of the course is required
+                    </span>
+                )}
             </div>
-
-
+            {/* Requirements/Instructions */}
+            <RequirementField
+                name="courseRequirements"
+                label="Requirements/Instructions"
+                register={register}
+                setValue={setValue}
+                errors={errors}
+                getValues={getValues}
+            />
+            {/* Next Button */}
+            <div className="flex justify-end gap-x-2">
+                {editCourse && (
+                    <button
+                        onClick={() => dispatch(setStep(2))}
+                        disabled={loading}
+                        className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+                    >
+                        Continue Wihout Saving
+                    </button>
+                )}
+                <IconBtn
+                    disabled={loading}
+                    text={!editCourse ? "Next" : "Save Changes"}
+                >
+                    <MdNavigateNext />
+                </IconBtn>
+            </div>
         </form>
     )
 }

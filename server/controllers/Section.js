@@ -5,9 +5,9 @@ const Course = require("../models/Course");
 exports.createSection = async (req, res) => {
     try {
         // data fetch
-        const { sectionName, CourseId } = req.body;
+        const { sectionName, courseId } = req.body;
         // data validation
-        if (!sectionName || !CourseId) {
+        if (!sectionName || !courseId) {
             return res.status(400).json({
                 success: false,
                 message: "Missing Properties"
@@ -18,9 +18,15 @@ exports.createSection = async (req, res) => {
             sectionName,
         });
         // update course with section object id
-        const updatedCourseDetails = await Course.findByIdAndUpdate(CourseId, {
+        const updatedCourseDetails = await Course.findByIdAndUpdate(courseId, {
             $push: { courseContent: newSection._id },
-        }, { new: true });
+        }, { new: true }).populate({
+            path: "courseContent",
+            populate: {
+                path: "subSection",
+            },
+        })
+        .exec();
         // return res
         res.status(200).json({
             success: true,

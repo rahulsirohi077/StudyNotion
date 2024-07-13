@@ -16,20 +16,20 @@ exports.createCourse = async (req, res) => {
       courseDescription,
       whatYouWillLearn,
       price,
-      tag: _tag,
+      // tag,
       category,
       status,
-      instructions: _instructions,
+      instructions,
     } = req.body
     // Get thumbnail image from request files
-    const thumbnail = req.files.thumbnailImage
+    // const thumbnail = req.files.thumbnailImage
 
     // Convert the tag and instructions from stringified Array to Array
-    const tag = JSON.parse(_tag);
-    const instructions = JSON.parse(_instructions)
+    // const tag = JSON.parse(_tag);
+    // const instructions = JSON.parse(_instructions)
 
-    console.log("tag", tag)
-    console.log("instructions", instructions)
+    // console.log("tag", tag)
+    // console.log("instructions", instructions)
 
     // Check if any of the required fields are missing
     if (
@@ -37,8 +37,8 @@ exports.createCourse = async (req, res) => {
       !courseDescription ||
       !whatYouWillLearn ||
       !price ||
-      !tag.length ||
-      !thumbnail ||
+      // !tag.length ||
+      // !thumbnail ||
       !category ||
       !instructions.length
     ) {
@@ -61,6 +61,7 @@ exports.createCourse = async (req, res) => {
         message: "Instructor Details Not Found",
       })
     }
+    console.log("instructorDetails ",instructorDetails);
 
     // Check if the tag given is valid
     const categoryDetails = await Category.findById(category)
@@ -71,11 +72,11 @@ exports.createCourse = async (req, res) => {
       })
     }
     // Upload the Thumbnail to Cloudinary
-    const thumbnailImage = await uploadImageToCloudinary(
-      thumbnail,
-      process.env.FOLDER_NAME
-    )
-    console.log(thumbnailImage)
+    // const thumbnailImage = await uploadImageToCloudinary(
+    //   thumbnail,
+    //   process.env.FOLDER_NAME
+    // )
+    // console.log(thumbnailImage)
     // Create a new course with the given details
     const newCourse = await Course.create({
       courseName,
@@ -83,9 +84,9 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
-      tag,
+      // tag,
       category: categoryDetails._id,
-      thumbnail: thumbnailImage.secure_url,
+      // thumbnail: thumbnailImage.secure_url,
       status: status,
       instructions,
     })
@@ -113,6 +114,7 @@ exports.createCourse = async (req, res) => {
       { new: true }
     )
     console.log("HEREEEEEEEE", categoryDetails2)
+    console.log("new course",newCourse);
     // Return the new course and a success message
     res.status(200).json({
       success: true,

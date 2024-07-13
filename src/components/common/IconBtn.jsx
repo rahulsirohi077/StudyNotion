@@ -11,10 +11,11 @@ export const IconBtn = ({
 }) => {
     return (
         <button
-        disabled={disabled}
-        onClick={onClick}
-        type={type}
-        className={`cursor-pointer bg-yellow-50 py-2 px-4 rounded-md text-black font-semibold ${customClasses}`}
+            disabled={disabled}
+            onClick={onClick}
+            type={type}
+            className={`cursor-pointer ${outline ? "border border-yellow-50 bg-transparent" : "bg-yellow-50"
+            } py-2 px-4 rounded-md text-black font-semibold ${customClasses}`}
         >
             {
                 children ? (

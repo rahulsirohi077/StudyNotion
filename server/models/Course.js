@@ -8,7 +8,7 @@ const courseSchema = new mongoose.Schema({
     courseDescription: {
         type:String,
     },
-    insturctor:{
+    instructor:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true

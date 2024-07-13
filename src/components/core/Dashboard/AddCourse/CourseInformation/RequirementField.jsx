@@ -33,14 +33,14 @@ const RequirementField = ({name,label,register,errors,setValue,getValues}) => {
   return (
     <div>
 
-        <label htmlFor={name}>{label}<sup>*</sup></label>
+        <label htmlFor={name} className='label-style text-richblack-5'>{label}<sup className='text-pink-200'>*</sup></label>
         <div>
             <input 
                 type="text"
                 id={name}
                 value={requirement}
                 onChange={(e)=>setRequirement(e.target.value)}
-                className='w-full' 
+                className='form-style w-full' 
             />
 
             <button
@@ -62,7 +62,7 @@ const RequirementField = ({name,label,register,errors,setValue,getValues}) => {
                                 <button
                                     type='button'
                                     onClick={()=>handleRemoveRequirement(index)}
-                                    className='text-sm text-pure-greys-300'
+                                    className='text-sm text-pure-greys-300 ml-2'
                                 >
                                     clear
                                 </button>
