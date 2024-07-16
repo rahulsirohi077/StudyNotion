@@ -142,7 +142,7 @@ const SubSectionModal = ({
                     <input 
                         id='lectureTitle'
                         placeholder='Enter Lecture Title'
-                        {...register('lecturTitle',{required:true})}
+                        {...register('lectureTitle',{required:true})}
                         className='w-full' 
                     />
                     {errors.lectureTitle && (
@@ -166,7 +166,7 @@ const SubSectionModal = ({
                     !view && (
                         <div>
                             <IconBtn
-                                text={loading ? (<div className='spinner'></div>)
+                                text={loading ? (<div>Loading...</div>)
                                     : edit ? 'Save Changes' : 'Save'
                                 }
                             />
