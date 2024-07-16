@@ -67,7 +67,7 @@ const CourseBuilderForm = () => {
   }
 
   const goToNext = () => {
-    if(course.courseContent.length === 0){
+    if(course?.courseContent?.length === 0){
       toast.error("Please add atleast one Section");
       return;
     }
@@ -135,12 +135,12 @@ const CourseBuilderForm = () => {
       </form>
 
       {
-        course.courseContent.length > 0 && (
+        course?.courseContent?.length > 0 && (
           <NestedView handleChangeEditSectionName={handleChangeEditSectionName}/>
         )
       }
 
-      <div className='flex justify-end gap-x-10'>
+      <div className='flex justify-end gap-x-10 mt-3'>
 
         <button onClick={goBack}
         className='rounded-md cursor-pointer flex items-center'>
