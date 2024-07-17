@@ -43,7 +43,7 @@ const CourseInformationForm = () => {
             setValue('courseShortDesc', course.courseDescription);
             setValue('coursePrice', course.price);
             setValue('courseTags', course.tag);
-            setValue('courseBenefit', course.whatYouWillLearn);
+            setValue('courseBenefits', course.whatYouWillLearn);
             setValue('courseCategory', course.category);
             setValue('courseRequirements', course.instructions);
             setValue('courseImage', course.thumbnail);
