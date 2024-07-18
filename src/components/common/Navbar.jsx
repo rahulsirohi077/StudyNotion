@@ -75,7 +75,9 @@ export const Navbar = () => {
 
                                                             subLinks.map((subLi, index) => {
                                                                 return (
-                                                                    <Link to={`/catalog/${subLi.name}`} key={index}
+                                                                    <Link to={`/catalog/${subLi.name
+                                                                        .split(" ").join("-").toLowerCase()
+                                                                    }`} key={index}
                                                                         className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
                                                                     >
                                                                         {subLi.name}
