@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom'
 import { apiConnector } from '../services/apiconnector';
 import { categories } from '../services/apis';
 import { getCatalogPageData } from '../services/operations/pageAndComponentData';
+import CourseSlider from '../components/core/Catalog/CourseSlider';
+import Course_Card from '../components/core/Catalog/Course_Card';
 
 const Catalog = () => {
 
@@ -32,6 +34,7 @@ const Catalog = () => {
                 console.log(error);
             }
         }
+        if(categoryId)
         getCategoryDetails();
     },[categoryId]);
 
@@ -57,21 +60,36 @@ const Catalog = () => {
                     <p>New</p>
                 </div>
                 <div>
-                    {/* <CourseSlider /> */}
+                    <CourseSlider Courses={catalogPageData?.data?.selectedCategory?.courses}/>
                 </div>
             </div>
 
             {/* section 2 */}
             <div>
-                <p>Top Courses</p>
+                <div>Top Courses in {catalogPageData?.data?.selectedCategory?.name}</div>
                 <div>
-                    {/* <CourseSlider/> */}
+                    <CourseSlider Courses={catalogPageData?.data?.differentCategory?.courses}/>
                 </div>
             </div>
 
             {/* section 3 */}
             <div>
-                <p>Frequently Bought Together</p>
+                <div>Frequently Bought</div>
+                <div className='py-8'>
+
+                    <div className='grid grid-cols-1 lg:grid-cols-2'>
+
+                        {
+                            catalogPageData?.data?.mostSellingCourses?.slice(0,4).map(
+                                (course,index) => (
+                                    <Course_Card course={course} key={index} Height={'h-[400px]'}/>
+                                )
+                            )
+                        }
+
+                    </div>
+
+                </div>
             </div>
 
         </div>

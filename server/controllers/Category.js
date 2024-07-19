@@ -56,7 +56,7 @@ exports.showAllCategory = async (req, res) => {
 // categoryPageDetails
 exports.categoryPageDetails = async (req, res) => {
     try {
-      const { categoryId } = req.body
+      const { categoryId } = req.body;
       console.log("PRINTING CATEGORY ID: ", categoryId);
       // Get courses for the specified category
       const selectedCategory = await Category.findById(categoryId)
@@ -64,6 +64,9 @@ exports.categoryPageDetails = async (req, res) => {
           path: "courses",
           match: { status: "Published" },
           populate: "ratingAndReviews",
+          populate: {
+            path: "instructor",
+        },
         })
         .exec()
   
