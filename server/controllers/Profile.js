@@ -154,10 +154,7 @@ exports.getEnrolledCourses = async (req, res) => {
         populate: {
           path: "courseContent",
           populate: {
-            path: "Section",
-            populate:{
-                path:"SubSection",
-            }
+            path: "subSection",
           },
         },
       })
