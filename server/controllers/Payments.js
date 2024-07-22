@@ -4,7 +4,8 @@ const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const { courseEnrollmentEmail } = require("../mail/template/courseEnrollmentEmail");
 const { default: mongoose } = require("mongoose");
-const {paymentSuccessEmail} = require('../mail/template/paymentSuccessfulEmail');
+const { paymentSuccessEmail } = require('../mail/template/paymentSuccessfulEmail');
+const crypto = require("crypto");
 
 exports.capturePayment = async (req, res) => {
 
@@ -72,21 +73,18 @@ exports.verifyPayment = async (req, res) => {
     const courses = req.body?.courses;
     const userId = req.user.id;
 
-    console.log('razorpay_order_id',razorpay_order_id);
-    console.log('razorpay_payment_id',razorpay_payment_id);
-    console.log('razorpay_signature',razorpay_signature);
-    console.log('courses',courses);
-    console.log('userId',userId);
-
-
-
     if (!razorpay_order_id ||
         !razorpay_payment_id ||
         !razorpay_signature || !courses || !userId) {
         return res.status(200).json({ success: false, message: "Payment Failed" });
     }
 
-    let expectedSignature = '12345'
+    let body = razorpay_order_id + "|" + razorpay_payment_id
+
+    const expectedSignature = crypto
+        .createHmac("sha256", process.env.RAZORPAY_SECRET)
+        .update(body.toString())
+        .digest("hex")
 
     if (expectedSignature === razorpay_signature) {
         // enroll student 
@@ -136,19 +134,19 @@ const enrollStudents = async (courses, userId, res) => {
         } catch (error) {
             console.log(error);
             return res.status(500).json({
-                success:false,
-                message:error.message
+                success: false,
+                message: error.message
             })
         }
     }
 }
 
-exports.sendPaymentSuccessEmail = async(req,res)=>{
-    const {orderId, paymentId, amount} = req.body;
+exports.sendPaymentSuccessEmail = async (req, res) => {
+    const { orderId, paymentId, amount } = req.body;
 
     const userId = req.user.id;
-    if(!orderId || !paymentId || !amount || !userId){
-        return res.status(400).json({success:false,message:"Please provide all the fields"});
+    if (!orderId || !paymentId || !amount || !userId) {
+        return res.status(400).json({ success: false, message: "Please provide all the fields" });
     }
 
     try {
@@ -158,11 +156,11 @@ exports.sendPaymentSuccessEmail = async(req,res)=>{
             enrolledStudent.email,
             `Payment Recieved`,
             paymentSuccessEmail(`${enrolledStudent.firstName} ${enrolledStudent.lastName}`,
-                amount/100,orderId,paymentId)
+                amount / 100, orderId, paymentId)
         )
     } catch (error) {
-        console.log('error in sending mail',error);
-        return res.status(500).json({success:false,message:'Could not send Mail'});
+        console.log('error in sending mail', error);
+        return res.status(500).json({ success: false, message: 'Could not send Mail' });
     }
 }
 
