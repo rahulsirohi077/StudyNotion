@@ -206,18 +206,30 @@ exports.editCourse = async (req, res) => {
 // getAllCourses Handler function
 exports.getAllCourses = async (req, res) => {
   try {
-    const allCourses = await Course.find();
-    res.status(200).json({
+    const allCourses = await Course.find(
+      { status: "Published" },
+      {
+        courseName: true,
+        price: true,
+        thumbnail: true,
+        instructor: true,
+        ratingAndReviews: true,
+        studentsEnrolled: true,
+      }
+    )
+      .populate("instructor")
+      .exec()
+
+    return res.status(200).json({
       success: true,
-      message: "Courses fetched successfully",
-      data: allCourses
+      data: allCourses,
     })
-  }
-  catch (error) {
-    return res.status(500).json({
+  } catch (error) {
+    console.log(error)
+    return res.status(404).json({
       success: false,
-      message: "Error while fetching all courses",
-      error: error.message
+      message: `Can't Fetch Course Data`,
+      error: error.message,
     })
   }
 }
