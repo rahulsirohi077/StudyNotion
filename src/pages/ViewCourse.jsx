@@ -31,10 +31,10 @@ const ViewCourse = () => {
 
   return (
     <>
-        <div>
+        <div className='flex gap-12 w-screen h-screen'>
             <VideoDetailsSideBar setReviewModal={setReviewModal}/>
 
-            <div>
+            <div className='w-full'>
                 <Outlet/>
             </div>
         </div>
