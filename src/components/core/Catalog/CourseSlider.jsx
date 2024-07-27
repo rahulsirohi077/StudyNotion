@@ -16,9 +16,9 @@ const CourseSlider = ({Courses}) => {
             (
                 <>
                     <Swiper
-                        slidesPerView={1}
+                        slidesPerView={3}
+                        spaceBetween={100}
                         loop={true}
-                        spaceBetween={200}
                         pagination={true}
                         modules={[Pagination,Autoplay,Navigation]}
                         autoplay={{
@@ -26,7 +26,7 @@ const CourseSlider = ({Courses}) => {
                             disableOnInteraction: false
                         }}
                         navigation={true}
-                        className='mySwipper'
+                        className="max-h-[30rem]"
                         breakpoints={{
                             1024:{slidesPerView:3}
                         }}
@@ -42,7 +42,7 @@ const CourseSlider = ({Courses}) => {
                 </>
             ) 
             : (
-                <p>No Courses Found</p>
+                <p className="text-xl text-richblack-5">No Courses Found</p>
             )
         }
     </>
