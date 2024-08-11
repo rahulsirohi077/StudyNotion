@@ -81,7 +81,7 @@ const CourseDetailsCard = ({ course, setConfirmationModal, handleBuyCourse }) =>
                     30-Day Money-Back Guarantee
                 </p>
                 <p className={`my-2 text-xl font-semibold `}>
-                    This Course Includes:
+                    This Course's Prerequisite:
                 </p>
                 <div className="flex flex-col gap-3 text-sm text-caribbeangreen-100">
                     {

@@ -64,7 +64,7 @@ const EnrolledCourses = () => {
                                                 />
                                                 <div className="flex max-w-xs flex-col gap-2">
                                                     <p className="font-semibold">{course.courseName}</p>
-                                                    <p className="text-xs text-richblack-300">{course.courseDescription}</p>
+                                                    <p className="text-xs text-richblack-300">{course.courseDescription.split(" ").slice(0, 15).join(" ") + "..."}</p>
                                                 </div>
                                             </div>
 

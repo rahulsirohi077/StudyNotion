@@ -95,7 +95,7 @@ const CourseInformationForm = () => {
                     formData.append("tag", JSON.stringify(data.courseTags))
                 }
                 if (currentValues.courseBenefit !== course.whatYouWillLearn) {
-                    formData.append("whatYouWillLearn", data.courseBenefit);
+                    formData.append("whatYouWillLearn", data.courseBenefits);
                 }
                 if (currentValues.courseCategory._id !== course.category._id) {
                     formData.append("category", data.courseCategory);
