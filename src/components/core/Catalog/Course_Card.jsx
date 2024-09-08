@@ -8,7 +8,7 @@ const Course_Card = ({course,Height}) => {
     const [avgReviewCount, setAvgReviewCount] = useState();
 
     useEffect(()=>{
-        const count = GetAvgRating(course.ratingAndReview);
+        const count = GetAvgRating(course.ratingAndReviews);
         setAvgReviewCount(count);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])

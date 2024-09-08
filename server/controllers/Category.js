@@ -62,9 +62,9 @@ exports.categoryPageDetails = async (req, res) => {
         .populate({
           path: "courses",
           match: { status: "Published" },
-          populate: "ratingAndReviews",
           populate: {
             path: "instructor",
+            path: "ratingAndReviews"
         },
         })
         .exec()
@@ -97,6 +97,10 @@ exports.categoryPageDetails = async (req, res) => {
         .populate({
           path: "courses",
           match: { status: "Published" },
+          populate: {
+            path: "instructor",
+            path: "ratingAndReviews"
+        },
         })
         .exec()
         //console.log("Different COURSE", differentCategory)
@@ -107,6 +111,7 @@ exports.categoryPageDetails = async (req, res) => {
           match: { status: "Published" },
           populate: {
             path: "instructor",
+            path: "ratingAndReviews"
         },
         })
         .exec()
