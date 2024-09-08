@@ -182,16 +182,14 @@ export const Home = () => {
             Review from Other Learners
           </h2>
           {/* review slider */}
-          <div className="w-full">
+          <div className="w-full mb-20">
             <ReviewSlider />
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="my-20">
         <Footer />
-      </div>
     </div>
   );
 };
