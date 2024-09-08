@@ -22,7 +22,7 @@ const CourseSlider = ({Courses}) => {
                         pagination={true}
                         modules={[Pagination,Autoplay,Navigation]}
                         autoplay={{
-                            delay: 1000,
+                            delay: 3000,
                             disableOnInteraction: false
                         }}
                         navigation={true}

@@ -51,7 +51,7 @@ const ReviewSlider = () => {
 
                 {
                     reviews.map((review,index)=>(
-                        <SwiperSlide key={index}>
+                        <SwiperSlide key={index} className='flex-col'>
                             <img
                                 src={review?.user?.image ? review?.user?.image :
                                     `https://api.dicebear.com/5.x/initials/svg?seed=${review?.user?.firstName} ${review?.user?.lastName}`}
