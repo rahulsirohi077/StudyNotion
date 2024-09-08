@@ -189,7 +189,7 @@ export const Home = () => {
       </div>
 
       {/* Footer */}
-      <div className="mt-10">
+      <div className="my-20">
         <Footer />
       </div>
     </div>
